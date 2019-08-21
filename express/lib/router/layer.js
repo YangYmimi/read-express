@@ -62,6 +62,7 @@ function Layer(path, options, fn) {
 Layer.prototype.handle_error = function handle_error(error, req, res, next) {
   var fn = this.handle;
 
+  // error 处理必须要求参数是四个
   if (fn.length !== 4) {
     // not a standard error handler
     return next(error);

@@ -35,12 +35,14 @@ exports = module.exports = createApplication;
 
 function createApplication() {
   var app = function(req, res, next) {
+    // 见 `./application.js` 定义的 `app.handle`
     app.handle(req, res, next);
   };
-
+  // 混合 `EventEmitter` 和 `./application.js` 的方法和属性到 `app`
   mixin(app, EventEmitter.prototype, false);
   mixin(app, proto, false);
 
+  // 扩展 `request` 和 `response` 对象，将 `app` 实例赋值给 `app` 属性，这样在 `request` 和 `response` 对象就可以使用 `this.app` 访问到 `express` 实例了
   // expose the prototype that will get set on requests
   app.request = Object.create(req, {
     app: { configurable: true, enumerable: true, writable: true, value: app }
@@ -55,6 +57,7 @@ function createApplication() {
   return app;
 }
 
+// 下面导出一些 `express` 公共的接口
 /**
  * Expose the prototypes.
  */
@@ -74,6 +77,7 @@ exports.Router = Router;
  * Expose middleware
  */
 
+// API : https://expressjs.com/zh-cn/4x/api.html#express
 exports.json = bodyParser.json
 exports.query = require('./middleware/query');
 exports.raw = bodyParser.raw
@@ -105,6 +109,7 @@ var removedMiddlewares = [
   'staticCache'
 ]
 
+// 需要从外部导入的中间件依赖
 removedMiddlewares.forEach(function (name) {
   Object.defineProperty(exports, name, {
     get: function () {

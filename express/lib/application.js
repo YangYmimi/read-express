@@ -54,6 +54,7 @@ var trustProxyDefaultSymbol = '@@symbol:trust_proxy_default';
  * @private
  */
 
+// 初始化 `express` 应用设置
 app.init = function init() {
   this.cache = {};
   this.engines = {};
@@ -71,10 +72,11 @@ app.defaultConfiguration = function defaultConfiguration() {
   var env = process.env.NODE_ENV || 'development';
 
   // default settings
+  // 设置默认的网站配置 https://expressjs.com/en/4x/api.html#app.settings.table
   this.enable('x-powered-by');
   this.set('etag', 'weak');
   this.set('env', env);
-  this.set('query parser', 'extended');
+  this.set('query parser', 'extended'); // The extended query parser is based on `qs`
   this.set('subdomain offset', 2);
   this.set('trust proxy', false);
 
@@ -171,6 +173,7 @@ app.handle = function handle(req, res, callback) {
     return;
   }
 
+  // 将 `req` 和 `res` 分发到不同的路由中
   router.handle(req, res, done);
 };
 
