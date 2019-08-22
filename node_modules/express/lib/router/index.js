@@ -52,6 +52,7 @@ var proto = module.exports = function(options) {
 
   router.params = {};
   router._params = [];
+  // options
   router.caseSensitive = opts.caseSensitive;
   router.mergeParams = opts.mergeParams;
   router.strict = opts.strict;
@@ -497,8 +498,10 @@ proto.route = function route(path) {
     end: true
   }, route.dispatch.bind(route));
 
+  // 每个 route 包含 stack
   layer.route = route;
 
+  // stack 存放 layer
   this.stack.push(layer);
   return route;
 };
@@ -507,6 +510,9 @@ proto.route = function route(path) {
 methods.concat('all').forEach(function(method){
   proto[method] = function(path){
     var route = this.route(path)
+    // 将 route 的回调函数参数全部取出
+    // app.get(path, fn1, fn2, fn3) => [fn1, fn2, fn3]
+    // 调用各方法的 Route.method 方法
     route[method].apply(route, slice.call(arguments, 1));
     return this;
   };

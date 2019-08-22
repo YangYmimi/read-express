@@ -42,11 +42,14 @@ module.exports = Route;
 
 function Route(path) {
   this.path = path;
+
+  // 存放 layer 的组件
   this.stack = [];
 
   debug('new %o', path)
 
   // route handlers for various http methods
+  // 存放 HTTP 方法的对象
   this.methods = {};
 }
 
@@ -55,6 +58,7 @@ function Route(path) {
  * @private
  */
 
+ // 判断 Route 对象中是否存在 method 方法， head 当作 get 处理
 Route.prototype._handles_method = function _handles_method(method) {
   if (this.methods._all) {
     return true;
@@ -74,6 +78,7 @@ Route.prototype._handles_method = function _handles_method(method) {
  * @private
  */
 
+// 获取 Route 中间件支持的所有的 HTTP 的 key，如果存在 get 则添加 head
 Route.prototype._options = function _options() {
   var methods = Object.keys(this.methods);
 
@@ -95,6 +100,7 @@ Route.prototype._options = function _options() {
  * @private
  */
 
+// 中间件派发
 Route.prototype.dispatch = function dispatch(req, res, done) {
   var idx = 0;
   var stack = this.stack;
@@ -111,6 +117,7 @@ Route.prototype.dispatch = function dispatch(req, res, done) {
 
   next();
 
+  // 对 Route 对象的 stack 按插入顺序进行遍历，依次执行内部的 layer 方法
   function next(err) {
     // signal to exit route
     if (err && err === 'route') {
@@ -168,6 +175,7 @@ Route.prototype.dispatch = function dispatch(req, res, done) {
  */
 
 Route.prototype.all = function all() {
+  // 获取所有的回调函数
   var handles = flatten(slice.call(arguments));
 
   for (var i = 0; i < handles.length; i++) {
@@ -186,9 +194,11 @@ Route.prototype.all = function all() {
     this.stack.push(layer);
   }
 
+  // 始终返回 this，就可以使用链式调用了
   return this;
 };
 
+// 遍历 methods 将其依次定义在 Route 对象中
 methods.forEach(function(method){
   Route.prototype[method] = function(){
     var handles = flatten(slice.call(arguments));

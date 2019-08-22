@@ -205,3 +205,77 @@ app.get(function (req, res, next) {})
 ```
 /user/:id => req.params.id
 ```
+
+`route.js`
+
+```
+function Route(path) {
+  this.path = path;
+
+  // 存放 layer 的组件
+  this.stack = [];
+
+  debug('new %o', path)
+
+  // route handlers for various http methods
+  // 存放 HTTP 方法的对象
+  this.methods = {};
+}
+
+Route.prototype.all = function all() {
+  // 获取所有的回调函数
+  var handles = flatten(slice.call(arguments));
+
+  for (var i = 0; i < handles.length; i++) {
+    var handle = handles[i];
+
+    if (typeof handle !== 'function') {
+      var type = toString.call(handle);
+      var msg = 'Route.all() requires a callback function but got a ' + type
+      throw new TypeError(msg);
+    }
+
+    var layer = Layer('/', {}, handle);
+    layer.method = undefined;
+
+    this.methods._all = true;
+    this.stack.push(layer);
+  }
+
+  // 始终返回 this，就可以使用链式调用了
+  return this;
+};
+
+// 遍历 methods 将其依次定义在 Route 对象中
+methods.forEach(function(method){
+  Route.prototype[method] = function(){
+    var handles = flatten(slice.call(arguments));
+    // 依次调用对应的 layer 方法
+    for (var i = 0; i < handles.length; i++) {
+      var handle = handles[i];
+
+      if (typeof handle !== 'function') {
+        var type = toString.call(handle);
+        var msg = 'Route.' + method + '() requires a callback function but got a ' + type
+        throw new Error(msg);
+      }
+
+      debug('%s %o', method, this.path)
+
+      var layer = Layer('/', {}, handle);
+      layer.method = method;
+
+      this.methods[method] = true;
+      this.stack.push(layer);
+    }
+
+    return this;
+  };
+});
+```
+
+```
+router.get('/path', fn1, fn2, fn3);
+router.get('/path', [fn1, [fn2, [fn3]]]);
+router.get('/path', fn1).get('/path', fn2).get('/path', fn3);
+```
