@@ -24,7 +24,7 @@ Node Express Practise
   - 绑定到 `express.Router()` 的实例
   - router.use()
   - router.METHOD()
-  - 调用 `next('route')` 跳过路由中间件剩余的中间件函数。该方式仅在使用 `app.METHOD()` 或 `router.METHOD()` 函数装入的中间件函数中有效
+  - 调用 `next()` 跳过路由中间件剩余的中间件函数。该方式仅在使用 `app.METHOD()` 或 `router.METHOD()` 函数装入的中间件函数中有效
 
 * [错误处理中间件](https://expressjs.com/zh-cn/guide/using-middleware.html#middleware.error-handling)
 
@@ -117,64 +117,13 @@ https://expressjs.com/zh-cn/4x/api.html#express
 
 在 `express.js` 文件中发现都通过 `module.exports` 导出
 
+#### setprototypeof
+
+* [Read setprototypeof](https://github.com/YangYmimi/read-express/issues/2)
+
 #### merge-descriptors
 
-* [Object.prototype.hasOwnProperty](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)
-* [Object.getOwnPropertyNames](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames)
-* [Object.getOwnPropertyDescriptor](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor)
-* [Object.defineProperty()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
-
-```
-'use strict'
-
-module.exports = merge
-
-// 自身属性, 忽略原型链上继承的属性
-var hasOwnProperty = Object.prototype.hasOwnProperty
-
-/**
- * Merge the property descriptors of `src` into `dest`
- *
- * @param {object} dest Object to add descriptors to
- * @param {object} src Object to clone descriptors from
- * @param {boolean} [redefine=true] Redefine `dest` properties with `src` properties
- * @returns {object} Reference to dest
- * @public
- */
-
-function merge(dest, src, redefine) {
-  if (!dest) {
-    throw new TypeError('argument dest is required')
-  }
-
-  if (!src) {
-    throw new TypeError('argument src is required')
-  }
-
-  if (redefine === undefined) {
-    // Default to true
-    // 默认使用 `dest` 中的属性替换 `src` 的属性
-    redefine = true
-  }
-
-  // 返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组
-  // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames#Description
-  Object.getOwnPropertyNames(src).forEach(function forEachOwnPropertyName(name) {
-    if (!redefine && hasOwnProperty.call(dest, name)) {
-      // Skip desriptor
-      // 如果不覆盖，则自动跳过已存在于 `dest` 中的属性
-      return
-    }
-
-    // Copy descriptor
-    // 返回属性描述符对象
-    var descriptor = Object.getOwnPropertyDescriptor(src, name)
-    Object.defineProperty(dest, name, descriptor)
-  })
-
-  return dest
-}
-```
+* [Read merge-descriptors](https://github.com/YangYmimi/read-express/issues/1)
 
 #### router 文件夹
 
