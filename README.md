@@ -2,7 +2,7 @@
 
 Node Express Practise
 
-## middlewares
+## 中间件
 
 #### Can do
 
@@ -68,62 +68,11 @@ Node Express Practise
 └── Readme.md
 ```
 
-#### express.js
+打算按照目录结构对 `express` 的内部源码进行阅读，对 `express` 代码添加对应注解，目录见 `express@4.17.1`
 
-`express.js` 由入口文件 `index.js` 加载
+#### 关于 express.js
 
-引入第三方中间件 :
-
-* [`body-parser`](https://github.com/expressjs/body-parser) : 对请求体进行解析
-* [`events.EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) : 事件触发与事件监听
-* [`merge-descriptors`](https://github.com/component/merge-descriptors) : 对象合并
-
-```
-var removedMiddlewares = [
-  'bodyParser',
-  'compress',
-  'cookieSession',
-  'session',
-  'logger',
-  'cookieParser',
-  'favicon',
-  'responseTime',
-  'errorHandler',
-  'timeout',
-  'methodOverride',
-  'vhost',
-  'csrf',
-  'directory',
-  'limit',
-  'multipart',
-  'staticCache'
-]
-```
-
-`express.js` 中明确的定义了上述中间件已不在 `express` 中存在，需要单独安装使用
-
-引入自定义模块 :
-
-* `req` : 自定义的 `request` 对象, `express` 文档中所有关于 `request` 对象的 `属性` 和 `API` 如下 https://expressjs.com/zh-cn/4x/api.html#req。该模块使用 [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_class_http_incomingmessage) 原型创建的对象, 继承所有 `http.IncomingMessage` 的原型方法
-
-  - `http` : `node` 的 `http` 模块
-  - [`Object.create()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
-
-* `res` : 自定义的 `response` 对象, `express` 文档中所有关于 `response` 对象的 `属性` 和 `API` 如下 https://expressjs.com/zh-cn/4x/api.html#re。
-
-提供的 `API` 有
-
-https://expressjs.com/zh-cn/4x/api.html#express
-
-在 `express.js` 文件中发现都通过 `module.exports` 导出
-
-#### setprototypeof
-
-* [Read setprototypeof](https://github.com/YangYmimi/read-express/issues/2)
-
-#### merge-descriptors
-
-* [Read merge-descriptors](https://github.com/YangYmimi/read-express/issues/1)
+[express.md](readme/express.md)
 
 #### router 文件夹
 
@@ -228,3 +177,13 @@ router.get('/path', fn1, fn2, fn3);
 router.get('/path', [fn1, [fn2, [fn3]]]);
 router.get('/path', fn1).get('/path', fn2).get('/path', fn3);
 ```
+
+#### 其他
+
+其他阅读主要是在阅读源码过程中联想到的其他知识点，以 `issue` 的方式加到 `repo` 中
+
+* [merge-descriptors](https://github.com/YangYmimi/read-express/issues/1)
+
+* [setprototypeof](https://github.com/YangYmimi/read-express/issues/2)
+
+* [express 中的中间件](https://github.com/YangYmimi/read-express/issues/3)

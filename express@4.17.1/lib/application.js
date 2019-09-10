@@ -90,6 +90,7 @@ app.defaultConfiguration = function defaultConfiguration() {
 
   this.on('mount', function onmount(parent) {
     // inherit trust proxy
+    // 设置代理服务器的时候才会触发事件
     if (this.settings[trustProxyDefaultSymbol] === true
       && typeof parent.settings['trust proxy fn'] === 'function') {
       delete this.settings['trust proxy'];
@@ -118,7 +119,7 @@ app.defaultConfiguration = function defaultConfiguration() {
   this.set('jsonp callback name', 'callback');
 
   if (env === 'production') {
-    this.enable('view cache');
+    this.enable('view cache'); // 生产环境开启 view cache
   }
 
   Object.defineProperty(this, 'router', {
