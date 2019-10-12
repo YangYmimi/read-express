@@ -1,8 +1,6 @@
 # Read Express
 
-Node Express Practise
-
-## 中间件
+### 中间件
 
 #### Can do
 
@@ -40,7 +38,7 @@ Node Express Practise
 
   - https://expressjs.com/zh-cn/resources/middleware.html
 
-## Code Analysis
+### Code Analysis
 
 #### Basic Structure
 
@@ -70,9 +68,15 @@ Node Express Practise
 
 打算按照目录结构对 `express` 的内部源码进行阅读，对 `express` 代码添加对应注解，目录见 `express@4.17.1`
 
-#### 关于 express.js
+#### express.js
 
-[express.md](readme/express.md)
+* [express.md](readme/express.md)
+
+* [Code Comments](express@4.17.1/lib/express.js)
+
+#### application.js
+
+* [Code Comments](express@4.17.1/lib/application.js)
 
 #### router 文件夹
 
@@ -179,8 +183,6 @@ router.get('/path', fn1).get('/path', fn2).get('/path', fn3);
 ```
 
 #### 其他
-
-其他阅读主要是在阅读源码过程中联想到的其他知识点，以 `issue` 的方式加到 `repo` 中
 
 * [merge-descriptors](https://github.com/YangYmimi/read-express/issues/1)
 

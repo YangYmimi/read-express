@@ -34,10 +34,12 @@ exports = module.exports = createApplication;
  */
 
 function createApplication() {
+  // 生成一个 app 实例
   var app = function(req, res, next) {
     // 见 `./application.js` 定义的 `app.handle`
     app.handle(req, res, next);
   };
+
   // 混合 `EventEmitter` 和 `./application.js` 的方法和属性到 `app`
   mixin(app, EventEmitter.prototype, false);
   mixin(app, proto, false);

@@ -35,6 +35,7 @@ var slice = Array.prototype.slice;
  * Application prototype.
  */
 
+ // 该模块导出一个对象字面量，后续逐步添加属性
 var app = exports = module.exports = {};
 
 /**
@@ -55,6 +56,7 @@ var trustProxyDefaultSymbol = '@@symbol:trust_proxy_default';
  */
 
 // 初始化 `express` 应用设置
+// 调用 express() 的时候会调用
 app.init = function init() {
   this.cache = {};
   this.engines = {};
@@ -92,12 +94,13 @@ app.defaultConfiguration = function defaultConfiguration() {
     // inherit trust proxy
     // 设置代理服务器的时候才会触发事件
     if (this.settings[trustProxyDefaultSymbol] === true
-      && typeof parent.settings['trust proxy fn'] === 'function') {
+      && typeof parent.settings[' trust proxy fn'] === 'function') {
       delete this.settings['trust proxy'];
       delete this.settings['trust proxy fn'];
     }
 
     // inherit protos
+    // 设置原型
     setPrototypeOf(this.request, parent.request)
     setPrototypeOf(this.response, parent.response)
     setPrototypeOf(this.engines, parent.engines)
@@ -618,7 +621,7 @@ app.render = function render(name, options, callback) {
  */
 
 app.listen = function listen() {
-  var server = http.createServer(this);
+  var server = http.createServer(this); // 利用 http 模块
   return server.listen.apply(server, arguments);
 };
 
