@@ -66,7 +66,7 @@
 └── Readme.md
 ```
 
-打算按照目录结构对 `express` 的内部源码进行阅读，对 `express` 代码添加对应注解，目录见 `express@4.17.1`
+按照目录结构对 `express` 的内部源码进行阅读，对 `express` 代码添加对应注解，目录见 `express@4.17.1`
 
 #### express.js
 
